@@ -119,13 +119,14 @@ pages. This task run several steps:</p>
 <li><code>cd website &amp;&amp; yarn install &amp;&amp; USE_SSH=true yarn publish-gh-pages</code></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="publish-to-github-pages-from-ci"></a><a href="#publish-to-github-pages-from-ci" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Publish to GitHub pages from CI</h2>
-<p>You can configure your Travis CI server to publish docs after merge into master.
-The <a href="https://docusaurus.io/docs/en/publishing#using-travis-cih">Docusaurus docs</a>
-already have excellent instructions for how to set this up. If those
-instructions work for you, then that's great! No need to read this section here.
-However, you prefer to use &quot;deploy keys&quot; over &quot;personal access tokens because
-deploy keys are limited to individual repositories instead of per-account. If
-this sounds interesting, read ahead.</p>
+<p>You can configure GitHub Actions or Travis CI server to publish docs after merge
+into master. The
+<a href="https://docusaurus.io/docs/en/publishing#using-travis-cih">Docusaurus docs</a>
+already have instructions for how to set this up. If those instructions work for
+you, then that's great! No need to read this section here. However, you prefer
+to use &quot;deploy keys&quot; over &quot;personal access tokens because deploy keys are
+limited to individual repositories instead of per-account. If this sounds
+interesting, read ahead.</p>
 <h3><a class="anchor" aria-hidden="true" id="deploy-key"></a><a href="#deploy-key" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deploy key</h3>
 <p>Open the &quot;Deploy key&quot; menu in your project settings:
 <a href="https://github.com/scalameta/mdoc/settings/keys">https://github.com/scalameta/mdoc/settings/keys</a>. Press &quot;Add deploy key&quot;.</p>
@@ -152,14 +153,18 @@ cat myproject.pub | xclip
 </code></pre></li>
 </ul>
 <p>Your screen should look like this</p>
-<p><img src="/mdoc/docs/assets/deploy_key.png" alt="Add GitHub deploy key"></p>
+<p><img src="https://i.imgur.com/hm3MpUK.png" alt="Add GitHub deploy key"></p>
 <h3><a class="anchor" aria-hidden="true" id="environment-variables"></a><a href="#environment-variables" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment variables</h3>
-<p>Next open the Travis CI settings panel for your project:
-<a href="https://travis-ci.org/scalameta/mdoc/settings">https://travis-ci.org/scalameta/mdoc/settings</a>.</p>
+<p>Next open the secrets settings for your CI provider. The URL for the mdoc repo
+looks like this:</p>
+<ul>
+<li>GitHub Actions: <a href="https://github.com/scalameta/mdoc/settings/secrets">https://github.com/scalameta/mdoc/settings/secrets</a></li>
+<li>Travis CI: <a href="https://travis-ci.org/scalameta/mdoc/settings">https://travis-ci.org/scalameta/mdoc/settings</a></li>
+</ul>
 <p>Add the following values:</p>
 <ul>
-<li><code>GITHUB_DEPLOY_KEY</code> or <code>GIT_DEPLOY_KEY</code>: the base64 encoded secret key. Note,
-the secret key is the file without the <code>.pub</code> extension
+<li><code>GIT_DEPLOY_KEY</code>: the base64 encoded secret key. Note, the secret key is the
+file without the <code>.pub</code> extension.
 <pre><code class="hljs css language-sh"><span class="hljs-comment"># macOS</span>
 cat myproject | base64 | pbcopy
 <span class="hljs-comment"># Ubuntu (assuming GNU base64)</span>
@@ -168,7 +173,35 @@ cat myproject | base64 -w0 | xclip
 cat myproject | base64 | xclip
 </code></pre></li>
 </ul>
-<h3><a class="anchor" aria-hidden="true" id="travisyml"></a><a href="#travisyml" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>.travis.yml</code></h3>
+<h3><a class="anchor" aria-hidden="true" id="github-actions"></a><a href="#github-actions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GitHub Actions</h3>
+<blockquote>
+<p>Skip this part if you are not using GitHub Actions.</p>
+</blockquote>
+<p>Next, create a new file at <code>.github/workflows/mdoc.yml</code> to trigger
+<code>docs/docusaurusPublishGhpages</code> on successful merge into master and on tag push.</p>
+<p>File: <a href="https://github.com/scalameta/mdoc/blob/master/.github/workflows/mdoc.yml">mdoc.yml</a></p>
+<pre><code class="hljs css language-text">name: Website
+on:
+  push:
+    branches: [master]
+    tags: ["*"]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: olafurpg/setup-scala@v7
+      - uses: olafurpg/setup-gpg@v2
+      - run: sbt docs/docusaurusPublishGhpages
+        env:
+          GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY }}
+</code></pre>
+<p>Commit your changes, push to master and you're all set! Merge a PR to your
+project and watch GitHub Actions release the docs 😎</p>
+<h3><a class="anchor" aria-hidden="true" id="travis-ci"></a><a href="#travis-ci" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Travis CI</h3>
+<blockquote>
+<p>Skip this part if you are not using Travis CI</p>
+</blockquote>
 <p>Next, update .travis.yml to trigger <code>docs/docusaurusPublishGhpages</code> on
 successful merge into master and on tag push. There are many ways to do this,
 but I recommend using Travis
@@ -247,7 +280,7 @@ with Scaladoc's CSS. You may want to add a header link to your API docs too:</p>
     ...
   }
 </code></pre>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/mdoc/docs/js.html"><span class="arrow-prev">← </span><span>Scala.js</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#requirements">Requirements</a></li><li><a href="#installation">Installation</a></li><li><a href="#create-static-site">Create static site</a></li><li><a href="#publish-to-github-pages-locally">Publish to GitHub pages locally</a></li><li><a href="#publish-to-github-pages-from-ci">Publish to GitHub pages from CI</a><ul class="toc-headings"><li><a href="#deploy-key">Deploy key</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#travisyml"><code>.travis.yml</code></a></li></ul></li><li><a href="#include-scaladoc-in-site">Include Scaladoc in site</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#7F4623"><section class="sitemap"><a href="/mdoc/" class="nav-home"><img src="/mdoc/img/mdoc-logo.png" alt="mdoc" width="66" height="58"/></a><div><h5>Docs</h5><a href="/mdoc/docs/installation.html">Get started</a></div><div><h5>Community</h5><a href="https://gitter.im/scalameta/mdoc" target="_blank">Chat on Gitter</a></div><div><h5>More</h5><a href="https://github.com/scalameta/mdoc" target="_blank">GitHub</a></div></section><section class="copyright">Copyright © 2020 mdoc developers</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/mdoc/docs/js.html"><span class="arrow-prev">← </span><span>Scala.js</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#requirements">Requirements</a></li><li><a href="#installation">Installation</a></li><li><a href="#create-static-site">Create static site</a></li><li><a href="#publish-to-github-pages-locally">Publish to GitHub pages locally</a></li><li><a href="#publish-to-github-pages-from-ci">Publish to GitHub pages from CI</a><ul class="toc-headings"><li><a href="#deploy-key">Deploy key</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#github-actions">GitHub Actions</a></li><li><a href="#travis-ci">Travis CI</a></li></ul></li><li><a href="#include-scaladoc-in-site">Include Scaladoc in site</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#7F4623"><section class="sitemap"><a href="/mdoc/" class="nav-home"><img src="/mdoc/img/mdoc-logo.png" alt="mdoc" width="66" height="58"/></a><div><h5>Docs</h5><a href="/mdoc/docs/installation.html">Get started</a></div><div><h5>Community</h5><a href="https://gitter.im/scalameta/mdoc" target="_blank">Chat on Gitter</a></div><div><h5>More</h5><a href="https://github.com/scalameta/mdoc" target="_blank">GitHub</a></div></section><section class="copyright">Copyright © 2020 mdoc developers</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
