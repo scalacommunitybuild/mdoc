@@ -148,7 +148,7 @@ performance.</p>
       </tr>
       <tr>
         <td><code>mdoc</code></td>
-        <td><code>sbt.InputTask[Unit]</code></td>
+        <td><code>InputTask[Unit]</code></td>
         <td>Run mdoc to generate markdown sources. Supports arguments like --watch to start the file watcher with livereload.</td>
       </tr><tr>
         <td><code>mdocIn</code></td>
@@ -168,11 +168,11 @@ performance.</p>
         <td>Additional command-line arguments to pass on every mdoc invocation. For example, add '--no-link-hygiene' to disable link hygiene.</td>
       </tr><tr>
         <td><code>mdocJS</code></td>
-        <td><code>scala.Option[sbt.Project]</code></td>
+        <td><code>Option[Project]</code></td>
         <td>Optional Scala.js classpath and compiler options to use for the mdoc:js modifier. To use this setting, set the value to `mdocJS := Some(jsproject)` where `jsproject` must be a Scala.js project.</td>
       </tr><tr>
         <td><code>mdocJSLibraries</code></td>
-        <td><code>sbt.Task[Seq[Attributed[java.io.File]]]</code></td>
+        <td><code>Task[Seq[Attributed[java.io.File]]]</code></td>
         <td>Additional local JavaScript files to load before loading the mdoc compiled Scala.js bundle. If using scalajs-bundler, set this key to `webpack.in(&lt;mdocJS project&gt;, Compile, fullOptJS).value`.</td>
       </tr><tr>
         <td><code>mdocAutoDependency</code></td>
