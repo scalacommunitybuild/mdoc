@@ -172,7 +172,7 @@ performance.</p>
         <td>Optional Scala.js classpath and compiler options to use for the mdoc:js modifier. To use this setting, set the value to `mdocJS := Some(jsproject)` where `jsproject` must be a Scala.js project.</td>
       </tr><tr>
         <td><code>mdocJSLibraries</code></td>
-        <td><code>sbt.Task[Seq[sbt.internal.util.Attributed[java.io.File]]]</code></td>
+        <td><code>sbt.Task[Seq[Attributed[java.io.File]]]</code></td>
         <td>Additional local JavaScript files to load before loading the mdoc compiled Scala.js bundle. If using scalajs-bundler, set this key to `webpack.in(&lt;mdocJS project&gt;, Compile, fullOptJS).value`.</td>
       </tr><tr>
         <td><code>mdocAutoDependency</code></td>
